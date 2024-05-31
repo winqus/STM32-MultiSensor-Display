@@ -23,6 +23,8 @@
 /* USER CODE BEGIN Includes */
 #include "button.h"
 #include "state_switch_command.h"
+#include "uart_display_strategy.h"
+#include "state_manager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,12 +95,17 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   button_setCommand(&state_switch_command);
+
+  uartDisplayStrategy_init(&huart2);
+  state_manager_init(&uartDisplayStrategy);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	state_manager_display();
+	HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

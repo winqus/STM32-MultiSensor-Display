@@ -7,15 +7,29 @@
 
 #include "state_manager.h"
 #include "display_state.h"
+#include "display_strategy.h"
 
 static DisplayState currentState;
+static DisplayStrategy *displayStrategy;
 
-void init() {
+void state_manager_init(DisplayStrategy *strategy) {
 	// TODO: load from state storage
+
+	if (displayStrategy) {
+		return;
+	}
+
+	if (!strategy) {
+		currentState = STATE_ERROR;
+
+		return;
+	}
+
 	currentState = STATE_NONE;
+	displayStrategy = strategy;
 }
 
-void next_state() {
+void state_manager_next_state() {
 	switch (currentState) {
 		case STATE_NONE:
 			currentState = STATE_TEMPERATURE;
@@ -31,11 +45,32 @@ void next_state() {
 	}
 }
 
-void set_state(DisplayState state) {
+void state_manager_display() {
+	if (!displayStrategy) {
+		return;
+	}
+
+	switch (currentState) {
+		case STATE_NONE:
+			displayStrategy->display(0.00);
+			break;
+		case STATE_TEMPERATURE:
+			displayStrategy->display(1.00);
+			break;
+		case STATE_POTENTIOMETER:
+			displayStrategy->display(2.00);
+			break;
+		default:
+			displayStrategy->display(-9.99);
+			break;
+	}
+}
+
+void state_manager_set_state(DisplayState state) {
 	// TODO: save to state storage (eeprom)
 	currentState = state;
 }
 
-DisplayState get_current_state(void) {
+DisplayState state_manager_get_current_state(void) {
 	return currentState;
 }

@@ -9,7 +9,7 @@
 #include "state_manager.h"
 
 static void switch_state_execute() {
-	next_state();
+	state_manager_next_state();
 }
 
 Command state_switch_command = {

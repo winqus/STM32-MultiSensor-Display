@@ -10,9 +10,10 @@
 
 #include "display_state.h"
 
-void init();
-void next_state();
-void set_state(DisplayState state);
-DisplayState get_current_state();
+void state_manager_init();
+void state_manager_next_state();
+void state_manager_set_state(DisplayState state);
+void state_manager_display();
+DisplayState state_manager_get_current_state();
 
 #endif /* INC_STATE_MANAGER_H_ */
